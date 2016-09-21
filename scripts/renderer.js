@@ -8,12 +8,10 @@ let currentFile = '';
 let focusOnWrite = false;
 let tails = [];
 
-
 document.addEventListener('DOMContentLoaded', function () {
     showWatchedFiles();
     watchFilesAndUpdateList();
 });
-
 
 function watchFilesAndUpdateList() {
     const logFilesToWatch = settings.getSync('configFilesToWatch');
@@ -76,7 +74,6 @@ const watchedFilesUpdated = () => {
     watchFilesAndUpdateList();
     currentFile = '';
 };
-
 
 const focus = () => {
     remote.getCurrentWindow().focus();
