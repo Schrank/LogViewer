@@ -3,6 +3,10 @@ const settings = require('electron-settings');
 
 let win;
 
+settings.defaults({
+    configFilesToWatch: []
+});
+settings.applyDefaultsSync();
 
 function createWindow() {
     // Create the browser window.
@@ -42,7 +46,7 @@ function createMenu() {
                             'buttonLabel': 'Add logfiles to watcher',
                             'title': 'Choose logfiles and log directories'
                         }, filesAndDirectories => {
-                            oldFilesAndDirectories = settings.getSync('configFilesToWatch');
+                            const oldFilesAndDirectories = settings.getSync('configFilesToWatch');
                             settings.setSync('configFilesToWatch', [...new Set(oldFilesAndDirectories.concat(filesAndDirectories))]);
                             win.webContents.send('filesToWatchUpdated');
                         });
@@ -205,7 +209,6 @@ function createMenu() {
             }
         ]
     }
-
 
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
