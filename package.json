@@ -1,0 +1,14 @@
+{
+  "product-name": "LogViewer",
+  "name": "log-viewer",
+  "version": "0.1.0",
+  "main": "main.js",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "electron": "^1.4.0",
+    "electron-settings": "~2.2",
+    "jquery": "~3.1",
+    "menu": "^0.2.5",
+    "tail": "~1.2.1"
+  }
+}
