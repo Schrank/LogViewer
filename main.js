@@ -9,25 +9,13 @@ settings.defaults({
 settings.applyDefaultsSync();
 
 function createWindow() {
-    // Create the browser window.
     win = new BrowserWindow({width: 800, height: 600, title: "LogViewer"});
-
-    // and load the index.html of the app.
     win.loadURL(`file://${__dirname}/index.html`);
-
-    // Emitted when the window is closed.
-    win.on('closed', () => {
-        // Dereference the window object, usually you would store windows
-        // in an array if your app supports multi windows, this is the time
-        // when you should delete the corresponding element.
-        win = null
-    });
     createMenu();
 }
 
 app.on('ready', createWindow);
 
-// Quit when all windows are closed.
 app.on('window-all-closed', () => {
     app.quit();
 });
@@ -167,7 +155,6 @@ function createMenu() {
                 }
             ]
         });
-        // Edit menu.
         template[1].submenu.push(
             {
                 type: 'separator'
@@ -184,7 +171,6 @@ function createMenu() {
                 ]
             }
         );
-        // Window menu.
         template[3].submenu = [
             {
                 label: 'Close',
