@@ -19,3 +19,6 @@ If you want to make sure you really see, when something happens in these files, 
 
 then the window is put in front and flashes.
 
+#How it works
+![Video of features](feature.gif)
+
