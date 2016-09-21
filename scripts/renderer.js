@@ -2,6 +2,8 @@ const fs = require('fs');
 const Tail = require('tail').Tail;
 const settings = require('electron-settings');
 const electron = require('electron');
+const remote = require('electron').remote;
+
 let currentFile = '';
 let focusOnWrite = false;
 let tails = [];
@@ -25,7 +27,7 @@ function watchFilesAndUpdateList() {
 
         tails.push(tail.on("line", function (data) {
                 if (focusOnWrite) {
-                    this.focus();
+                    remote.getCurrentWindow().focus();
                 }
                 const list = $('#list');
                 if (logFile != currentFile) {
@@ -43,8 +45,8 @@ electron.ipcRenderer.on('filesToWatchUpdated', () => {
     showWatchedFiles();
 });
 
-electron.ipcRenderer.on('focusOnWrite', (focusOnWrite) => {
-    this.focusOnWrite = focusOnWrite;
+electron.ipcRenderer.on('focusOnWrite', (e, newFocusOnWrite) => {
+    focusOnWrite = newFocusOnWrite;
 });
 
 function showWatchedFiles() {
