@@ -34,6 +34,9 @@ function createMenu() {
                             'buttonLabel': 'Add logfiles to watcher',
                             'title': 'Choose logfiles and log directories'
                         }, filesAndDirectories => {
+                            if (!filesAndDirectories) {
+                                return;
+                            }
                             const oldFilesAndDirectories = settings.getSync('configFilesToWatch');
                             settings.setSync('configFilesToWatch', [...new Set(oldFilesAndDirectories.concat(filesAndDirectories))]);
                             win.webContents.send('filesToWatchUpdated');
