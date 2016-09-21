@@ -18,31 +18,30 @@ document.addEventListener('DOMContentLoaded', function () {
 function watchFilesAndUpdateList() {
     const logFilesToWatch = settings.getSync('configFilesToWatch');
 
-    logFilesToWatch.forEach(logFile => {
-        tails.forEach(function (tail) {
-            tail.unwatch();
-        });
-        tails = [];
-        const tail = new Tail(logFile);
+    tails.forEach(function (tail) {
+        tail.unwatch();
+    });
+    tails = [];
 
-        tails.push(tail.on("line", function (data) {
-                if (focusOnWrite) {
-                    remote.getCurrentWindow().focus();
-                }
-                const list = $('#list');
-                if (logFile != currentFile) {
-                    list.append('<li class="filename">==&gt; ' + logFile + ' &lt;==</li>');
-                    currentFile = logFile;
-                }
-                list.append('<li class="entry">' + data + '</li>');
-            }.bind(logFile))
-        );
+    logFilesToWatch.forEach(logFile => {
+        const tail = new Tail(logFile);
+        tail.on("line", function (data) {
+            if (focusOnWrite) {
+                focus();
+            }
+            const list = $('#list');
+            if (logFile != currentFile) {
+                list.append('<li class="filename">==&gt; ' + logFile + ' &lt;==</li>');
+                currentFile = logFile;
+            }
+            list.append('<li class="entry">' + data + '</li>');
+        }.bind(logFile));
+        tails.push(tail);
     });
 }
 
 electron.ipcRenderer.on('filesToWatchUpdated', () => {
-    watchFilesAndUpdateList();
-    showWatchedFiles();
+    watchedFilesUpdated();
 });
 
 electron.ipcRenderer.on('focusOnWrite', (e, newFocusOnWrite) => {
@@ -68,6 +67,21 @@ function showWatchedFiles() {
         settings.setSync('configFilesToWatch', $.grep(settings.getSync('configFilesToWatch'), file => {
             return file != $(e.target).data('file')
         }));
-        showWatchedFiles();
+        watchedFilesUpdated();
     });
 }
+
+const watchedFilesUpdated = () => {
+    showWatchedFiles();
+    watchFilesAndUpdateList();
+    currentFile = '';
+};
+
+
+const focus = () => {
+    remote.getCurrentWindow().focus();
+    $('body').addClass('blink');
+    setTimeout(() => {
+        $('body').removeClass('blink');
+    }, 1000);
+};
