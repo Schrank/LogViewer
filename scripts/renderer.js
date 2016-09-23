@@ -7,6 +7,7 @@ const remote = require('electron').remote;
 let currentFile = '';
 let focusOnWrite = false;
 let tails = [];
+let stayAtBottom = true;
 
 document.addEventListener('DOMContentLoaded', function () {
     showWatchedFiles();
@@ -33,6 +34,11 @@ function watchFilesAndUpdateList() {
                 currentFile = logFile;
             }
             list.append('<li class="entry">' + data + '</li>');
+
+            if (stayAtBottom) {
+                const target = $('html,body');
+                target.scrollTop(target.height());
+            }
         }.bind(logFile));
         tails.push(tail);
     });
@@ -85,6 +91,11 @@ function showWatchedFiles() {
         }));
         watchedFilesUpdated();
     });
+
+    if (stayAtBottom) {
+        const target = $('html,body');
+        target.scrollTop(target.height());
+    }
 }
 
 const watchedFilesUpdated = () => {
@@ -100,3 +111,8 @@ const focus = () => {
         $('body').removeClass('blink');
     }, 1000);
 };
+
+// stay at the bottom if at the bottom
+$(window).scroll(function () {
+    stayAtBottom = $(window).scrollTop() + $(window).height() == $(document).height();
+});
