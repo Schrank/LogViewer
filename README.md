@@ -5,7 +5,8 @@ Watch your logfiles.
 
 ## Add log file
 
-Use the menu `Edit > Add` to add log files.
+- Use the menu `Edit > Add` to add log files.
+- Drop them on the window
 
 ## Remove log files
 

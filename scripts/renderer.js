@@ -46,6 +46,24 @@ electron.ipcRenderer.on('focusOnWrite', (e, newFocusOnWrite) => {
     focusOnWrite = newFocusOnWrite;
 });
 
+document.ondragover = (ev) => {
+    ev.preventDefault()
+};
+
+document.ondrop = (ev) => {
+    ev.preventDefault();
+
+    const size = ev.dataTransfer.files.length;
+    let filesAndDirectories = [];
+    for (let i = 0; i < size; i++) {
+        filesAndDirectories.push(ev.dataTransfer.files[i].path);
+    }
+
+    const oldFilesAndDirectories = settings.getSync('configFilesToWatch');
+    settings.setSync('configFilesToWatch', [...new Set(oldFilesAndDirectories.concat(filesAndDirectories))]);
+    watchedFilesUpdated();
+};
+
 function showWatchedFiles() {
     const list = $('#list');
     const logFilesToWatch = settings.getSync('configFilesToWatch');

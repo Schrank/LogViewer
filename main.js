@@ -37,9 +37,7 @@ function createMenu() {
                             if (!filesAndDirectories) {
                                 return;
                             }
-                            const oldFilesAndDirectories = settings.getSync('configFilesToWatch');
-                            settings.setSync('configFilesToWatch', [...new Set(oldFilesAndDirectories.concat(filesAndDirectories))]);
-                            win.webContents.send('filesToWatchUpdated');
+                            addNewLogfiles(filesAndDirectories);
                         });
                     }
                 },
@@ -194,3 +192,9 @@ function createMenu() {
     const menu = Menu.buildFromTemplate(template);
     Menu.setApplicationMenu(menu);
 }
+
+const addNewLogfiles = (filesAndDirectories) => {
+    const oldFilesAndDirectories = settings.getSync('configFilesToWatch');
+    settings.setSync('configFilesToWatch', [...new Set(oldFilesAndDirectories.concat(filesAndDirectories))]);
+    win.webContents.send('filesToWatchUpdated');
+};
