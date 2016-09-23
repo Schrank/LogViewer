@@ -111,15 +111,7 @@ function createMenu() {
             ]
         },
         {
-            role: 'help',
-            submenu: [
-                {
-                    label: 'Learn More',
-                    click () {
-                        require('electron').shell.openExternal('http://electron.atom.io')
-                    }
-                }
-            ]
+            role: 'help'
         }
     ];
 
